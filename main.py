@@ -196,15 +196,15 @@ def create_transitions_right(data, states_map, input_symbols):
 
 
 def main():
-    # if len(sys.argv) != 3:
-    #     print("Использование:")
-    #     print("program grammar.txt output.csv")
-    #     sys.exit(1)
-    #
-    # input_file = sys.argv[1]
-    # output_file = sys.argv[2]
+    if len(sys.argv) != 3:
+        print("Использование:")
+        print("program grammar.txt output.csv")
+        sys.exit(1)
 
-    left_grammar_to_moore("input.txt", "output.csv")
+    input_file = sys.argv[1]
+    output_file = sys.argv[2]
+
+    left_grammar_to_moore(input_file, output_file)
 
 
 if __name__ == "__main__":
