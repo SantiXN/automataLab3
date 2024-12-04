@@ -40,13 +40,15 @@ def left_grammar_to_moore(input_file, output_file):
 
             match = re.match(LEFT_PATTERN, current_record)
             if match:
-                matched = True
                 if current_key is not None:
                     data[current_key] = current_values
 
                 current_key = match.group(1)
                 current_values = match.group(2).split('|')
                 current_values = [value.strip() for value in current_values]
+                print(current_key, current_values)
+                if len(current_values) > 1:
+                    matched = True
 
                 current_record = ""
 
