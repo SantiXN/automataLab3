@@ -46,8 +46,7 @@ def left_grammar_to_moore(input_file, output_file):
                 current_key = match.group(1)
                 current_values = match.group(2).split('|')
                 current_values = [value.strip() for value in current_values]
-                print(current_key, current_values)
-                if len(current_values) > 1:
+                if len(current_values[0]) > 1:
                     matched = True
 
                 current_record = ""
