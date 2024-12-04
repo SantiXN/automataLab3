@@ -17,8 +17,8 @@ def print_moore(output_filename, transitions, outputs, states, input_symbols):
         for input_symbol in input_symbols:
             row = [input_symbol]
             for state in states:
-                next_state = transitions[input_symbol].get(state, '')
-                row.append(next_state)
+                next_states = transitions[input_symbol].get(state, [])
+                row.append(','.join(next_states) if next_states else '')
             writer.writerow(row)
 
 
@@ -95,14 +95,18 @@ def right_grammar_to_moore(input_file, output_file):
         if current_key is not None:
             data[current_key] = current_values
 
-    print(data)
+    print("data", data)
 
     states_map = convert_to_states(list(data.keys()) + ["F"])
+    print("states_map", states_map)
     final_state = states_map["F"]
     outputs = get_outputs(states_map, final_state)
+    print("outputs", outputs)
 
     input_symbols = get_input_symbols(data)
+    print("input_symbols", input_symbols)
     transitions = create_transitions_right(data, states_map, input_symbols)
+    print("transitions", transitions)
     print_moore(output_file, transitions, outputs, list(states_map.values()), input_symbols)
 
     return data
@@ -147,7 +151,7 @@ def create_transitions_left(data, states_map, input_symbols):
     transitions = {}
 
     for symbol in input_symbols:
-        transitions[symbol] = {state: '' for state in states_map.values()}
+        transitions[symbol] = {state: [] for state in states_map.values()}
 
         for key, values in data.items():
             for value in values:
@@ -159,9 +163,9 @@ def create_transitions_left(data, states_map, input_symbols):
 
                 if symbol in value:
                     if '<' not in value and '>' not in value:
-                        transitions[symbol][states_map['H']] = states_map[key]
+                        transitions[symbol][states_map['H']].append(states_map[key])
                     else:
-                        transitions[symbol][states_map[bracketed_symbol]] = states_map[key]
+                        transitions[symbol][states_map[bracketed_symbol]].append(states_map[key])
 
     return transitions
 
@@ -170,7 +174,7 @@ def create_transitions_right(data, states_map, input_symbols):
     transitions = {}
 
     for symbol in input_symbols:
-        transitions[symbol] = {state: '' for state in states_map.values()}
+        transitions[symbol] = {state: [] for state in states_map.values()}
 
         for key, values in data.items():
             for value in values:
@@ -181,9 +185,9 @@ def create_transitions_right(data, states_map, input_symbols):
 
                 if symbol in value:
                     if '<' not in value and '>' not in value:
-                        transitions[symbol][states_map[key]] = states_map['F']
+                        transitions[symbol][states_map[key]].append(states_map['F'])
                     else:
-                        transitions[symbol][states_map[key]] = states_map[bracketed_symbol]
+                        transitions[symbol][states_map[key]].append(states_map[bracketed_symbol])
 
     return transitions
 
