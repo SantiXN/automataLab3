@@ -27,6 +27,7 @@ def left_grammar_to_moore(input_file, output_file):
     current_key = None
     current_values = []
     current_record = ""
+    matched = False
 
     with open(input_file, 'r', encoding='utf-8') as file:
         for line in file:
@@ -39,6 +40,7 @@ def left_grammar_to_moore(input_file, output_file):
 
             match = re.match(LEFT_PATTERN, current_record)
             if match:
+                matched = True
                 if current_key is not None:
                     data[current_key] = current_values
 
@@ -51,7 +53,7 @@ def left_grammar_to_moore(input_file, output_file):
         if current_key is not None:
             data[current_key] = current_values
 
-    if len(data) == 0:
+    if not matched:
         right_grammar_to_moore(input_file, output_file)
         return
 
@@ -193,15 +195,15 @@ def create_transitions_right(data, states_map, input_symbols):
 
 
 def main():
-    if len(sys.argv) != 3:
-        print("Использование:")
-        print("program grammar.txt output.csv")
-        sys.exit(1)
+    # if len(sys.argv) != 3:
+    #     print("Использование:")
+    #     print("program grammar.txt output.csv")
+    #     sys.exit(1)
 
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
+    # input_file = sys.argv[1]
+    # output_file = sys.argv[2]
 
-    left_grammar_to_moore(input_file, output_file)
+    left_grammar_to_moore("input.txt", "output.csv")
 
 
 if __name__ == "__main__":
