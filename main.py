@@ -46,7 +46,7 @@ def left_grammar_to_moore(input_file, output_file):
                 current_key = match.group(1)
                 current_values = match.group(2).split('|')
                 current_values = [value.strip() for value in current_values]
-                if len(current_values[0]) > 1:
+                if len(current_values) > 1 or len(current_values[0]) > 1:
                     matched = True
 
                 current_record = ""
@@ -196,15 +196,15 @@ def create_transitions_right(data, states_map, input_symbols):
 
 
 def main():
-    if len(sys.argv) != 3:
-        print("Использование:")
-        print("program grammar.txt output.csv")
-        sys.exit(1)
+    # if len(sys.argv) != 3:
+    #     print("Использование:")
+    #     print("program grammar.txt output.csv")
+    #     sys.exit(1)
+    #
+    # input_file = sys.argv[1]
+    # output_file = sys.argv[2]
 
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
-
-    left_grammar_to_moore(input_file, output_file)
+    left_grammar_to_moore("input.txt", "output.csv")
 
 
 if __name__ == "__main__":
